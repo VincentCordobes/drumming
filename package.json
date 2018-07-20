@@ -1,0 +1,12 @@
+{
+  "name": "instagram",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "download": "node ./src/index.js"
+  },
+  "dependencies": {
+    "lodash": "^4.17.10"
+  }
+}
