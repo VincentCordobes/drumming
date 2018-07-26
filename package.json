@@ -4,9 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "download": "node ./src/index.js"
+    "download": "node ./src/index.js",
+    "choose": "node ./src/choose-one.js"
   },
   "dependencies": {
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "luxon": "^1.3.2"
   }
 }
