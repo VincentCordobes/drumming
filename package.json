@@ -3,12 +3,20 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "bin": {
+    "inst-update": "./src/index.js"
+  },
   "scripts": {
-    "download": "node ./src/index.js",
-    "choose": "node ./src/choose-one.js"
+    "instagram": "node ./src/instagram.js",
+    "youtube": "node ./src/youtube.js",
+    "choose": "node ./src/choose.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "lodash": "^4.17.10",
     "luxon": "^1.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^10.9.3"
   }
 }
