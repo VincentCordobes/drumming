@@ -22,7 +22,9 @@ const playlists = [
 ]
 
 function main() {
-  playlists.forEach(({ output, url }) => download(authOpts)(output)(url))
+  return Promise.all(
+    playlists.map(({ output, url }) => download(authOpts)(output)(url))
+  )
 }
 
 function buildPlaylistUrl(playlistId) {

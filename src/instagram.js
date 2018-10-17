@@ -16,7 +16,7 @@ function getVideoUrlsFromApi() {
   const variables = encodeURI(
     JSON.stringify({
       id: '2910570632',
-      first: 6,
+      first: 20,
     })
   )
 

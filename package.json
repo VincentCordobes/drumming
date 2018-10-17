@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "bin": {
-    "inst-update": "./src/index.js"
+    "drum-instagram": "./src/instagram.js",
+    "drum-youtube": "./src/youtube.js",
+    "drum-choose": "./src/choose.js"
   },
   "scripts": {
     "instagram": "node ./src/instagram.js",
