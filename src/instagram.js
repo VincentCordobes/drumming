@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs')
-const { chunk, map, get, flow } = require('lodash/fp')
+const { chunk, map, get, flow, filter } = require('lodash/fp')
 const axios = require('axios')
 const { videoPaths } = require('./video-paths')
 const { Cookie } = require('../env.js')
@@ -12,11 +12,15 @@ main()
 const downloadInsta = download()(videoPaths.instagram)
 
 function getVideoUrlsFromApi() {
+  const FIRST_COUNT = 40
+
+  const archive = readArchive()
+
   const query_hash = 'f883d95537fbcd400f466f63d42bd8a1'
   const variables = encodeURI(
     JSON.stringify({
       id: '2910570632',
-      first: 20,
+      first: FIRST_COUNT,
     })
   )
 
@@ -26,14 +30,19 @@ function getVideoUrlsFromApi() {
       { headers: { Cookie } }
     )
     .then(({ data }) => extractUrls(data))
+    .then(filter(url => archive.indexOf(url) === -1))
+    .then(map(buildUrl))
+    .then(urls => {
+      console.log(`${FIRST_COUNT - urls.length} already recorded in archive`)
+      return urls
+    })
     .catch(handleRequestError)
 }
 
 function extractUrls(response) {
   return flow(
     get('data.user.edge_saved_media.edges'),
-    map(get('node.shortcode')),
-    map(buildUrl)
+    map(get('node.shortcode'))
   )(response)
 }
 
@@ -50,7 +59,7 @@ function getVideoUrlsFromHtml(html) {
 
 async function main() {
   if (!Cookie) {
-    throw new Error('Cookie should be present in env')
+    throw new Error('Missing cookie in env')
   }
   const urls = await getVideoUrlsFromApi()
   if (!urls) return
@@ -80,4 +89,9 @@ function handleRequestError(error) {
   } else {
     console.log('Error', error.message)
   }
+}
+
+function readArchive() {
+  const archivePath = videoPaths.instagram + '/archive.txt'
+  return fs.readFileSync(archivePath)
 }
