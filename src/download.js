@@ -14,6 +14,7 @@ function download(authOpts = {}) {
         '-o',
         outputPath + '/' + OUTPUT_TEMPLATE,
         ...authParams,
+        ...['--download-archive', outputPath + '/archive.txt'],
       ])
       child.stdout.on('data', data => {
         process.stdout.write(data)
