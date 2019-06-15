@@ -3,7 +3,7 @@
 const fs = require('fs')
 const { chunk, map, get, flow, filter } = require('lodash/fp')
 const axios = require('axios')
-const { videoPaths } = require('./video-paths')
+const { videoPaths, BASE_PATH } = require('./video-paths')
 const { Cookie } = require('../env.js')
 const { download } = require('./download')
 
@@ -59,8 +59,16 @@ function getVideoUrlsFromHtml(html) {
 
 async function main() {
   if (!Cookie) {
-    throw new Error('Missing cookie in env')
+    console.log('Error: Missing cookie in env')
+    process.exit(1)
   }
+
+  if (!fs.existsSync(BASE_PATH)) {
+    console.log(`Error: Cannot access '${BASE_PATH}'. 
+       Make sure that path exists.`)
+    process.exit(1)
+  }
+
   const urls = await getVideoUrlsFromApi()
   if (!urls) return
   console.log(urls)

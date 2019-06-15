@@ -9,18 +9,20 @@ function download(authOpts = {}) {
 
   return outputPath => url =>
     new Promise(resolve => {
-      const child = spawn('youtube-dl', [
-        url,
-        '-o',
-        outputPath + '/' + OUTPUT_TEMPLATE,
-        ...authParams,
-        ...['--download-archive', outputPath + '/archive.txt'],
-      ])
-      child.stdout.on('data', data => {
-        process.stdout.write(data)
-      })
+      const child = spawn(
+        'youtube-dl',
+        [
+          url,
+          '-o',
+          outputPath + '/' + OUTPUT_TEMPLATE,
+          ...authParams,
+          ...['--download-archive', outputPath + '/archive.txt'],
+          '--ignore-errors',
+        ],
+        { stdio: 'inherit' }
+      )
       child.on('close', code => {
-        resolve()
+        resolve(code)
       })
     })
 }
