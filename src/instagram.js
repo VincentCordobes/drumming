@@ -6,6 +6,7 @@ const axios = require('axios')
 const { videoPaths, BASE_PATH } = require('./video-paths')
 const { Cookie } = require('../env.js')
 const { download } = require('./download')
+const { ensurePathExists } = require('./ensure-path-exists')
 
 main()
 
@@ -46,28 +47,13 @@ function extractUrls(response) {
   )(response)
 }
 
-function getVideoUrlsFromHtml(html) {
-  const URL_REGEX = /<a href="\/(p\/(.*?)\/\?saved-by=vincentcordobes)"/g
-  let result
-  let urls = []
-  while ((result = URL_REGEX.exec(html)) !== null) {
-    const shortcode = result[2]
-    urls.push(buildUrl(shortcode))
-  }
-  return urls
-}
-
 async function main() {
   if (!Cookie) {
     console.log('Error: Missing cookie in env')
     process.exit(1)
   }
 
-  if (!fs.existsSync(BASE_PATH)) {
-    console.log(`Error: Cannot access '${BASE_PATH}'. 
-       Make sure that path exists.`)
-    process.exit(1)
-  }
+  ensurePathExists(BASE_PATH)
 
   const urls = await getVideoUrlsFromApi()
   if (!urls) return

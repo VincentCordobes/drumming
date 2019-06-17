@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 const { download } = require('./download')
-const { videoPaths } = require('./video-paths')
+const { videoPaths, BASE_PATH } = require('./video-paths')
+const { ensurePathExists } = require('./ensure-path-exists')
 const env = require('../env')
 
 const authOpts = {
@@ -22,6 +23,7 @@ const playlists = [
 ]
 
 function main() {
+  ensurePathExists(BASE_PATH)
   return Promise.all(
     playlists.map(({ output, url }) => download(authOpts)(output)(url))
   )
