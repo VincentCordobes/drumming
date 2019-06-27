@@ -6,12 +6,14 @@
   "bin": {
     "drum-instagram": "./src/instagram.js",
     "drum-youtube": "./src/youtube.js",
-    "drum-choose": "./src/choose.js"
+    "drum-choose": "./src/choose.js",
+    "drum-library-sync": "./script/library_sync.sh"
   },
   "scripts": {
     "instagram": "node ./src/instagram.js",
     "youtube": "node ./src/youtube.js",
-    "choose": "node ./src/choose.js"
+    "choose": "node ./src/choose.js",
+    "drum-library-sync": "./script/library_sync.sh"
   },
   "dependencies": {
     "axios": "^0.18.0",
