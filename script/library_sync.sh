@@ -3,13 +3,16 @@
 sourcepath="/Users/Vincent/drum-library"
 targetpath="/Volumes/Vincent HDD/drumming"
 
+
+cd $sourcepath
+
 if [[ ! -d "$sourcepath" ]]; then
-  echo "$sourcepath doesn't exist"
+  echo "Info: $sourcepath doesn't exist => nothing to do"
   exit 0
 fi
 
 if [[ ! -d "$targetpath" ]]; then
-  echo "$targetpath doesn't exist."
+  echo "Error: $targetpath doesn't exist"
   exit 1
 fi
 
@@ -33,3 +36,5 @@ done
 
 rsync -auvh --progress --exclude=".*" "$sourcepath/"  "$targetpath"
 
+git add .
+git commit -m 'Update'
