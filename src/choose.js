@@ -3,8 +3,6 @@
 const fs = require('fs')
 const os = require('os')
 const path = require('path')
-const { spawn } = require('child_process')
-const { DateTime } = require('luxon')
 const { flatMap } = require('lodash/fp')
 const { videoPaths, BASE_PATH } = require('./video-paths')
 
@@ -90,8 +88,6 @@ function print(paths) {
 }
 
 function main() {
-  const options = process.argv
-
   let pickedVideos
   if (process.argv.includes('-d')) {
     const allDone = readFile(todoFilePath)
