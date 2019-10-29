@@ -37,4 +37,4 @@ done
 rsync -auvh --progress --exclude=".*" "$sourcepath/"  "$targetpath"
 
 git add .
-git commit -m 'Update'
+git commit -m 'Update' || echo 'Nothing to commit'
