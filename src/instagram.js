@@ -7,6 +7,7 @@ const { videoPaths, BASE_PATH } = require('./video-paths')
 const { Cookie } = require('../env.js')
 const { download } = require('./download')
 const { ensurePathExists } = require('./ensure-path-exists')
+const { handleError } = require('./error-handler')
 
 main()
 
@@ -64,10 +65,14 @@ async function main() {
   }
 
   const chunks = chunk(4, urls)
+  let statusCodes = []
   for (let i = 0; i < chunks.length; i++) {
     const urls = chunks[i]
-    await Promise.all(urls.map(downloadInsta))
+    const codes = await Promise.all(urls.map(downloadInsta))
+    statusCodes.push(...codes)
   }
+
+  handleError(statusCodes)
 }
 
 function buildUrl(shortcode) {

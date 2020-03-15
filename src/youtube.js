@@ -3,12 +3,10 @@
 const { download } = require('./download')
 const { videoPaths, BASE_PATH } = require('./video-paths')
 const { ensurePathExists } = require('./ensure-path-exists')
-const env = require('../env')
+const { handleError } = require('./error-handler')
 
 const authOpts = {
-  authenticated: true,
-  username: 'vincent_c64@hotmail.fr',
-  password: env.ytpwd,
+  cookie: 'youtube.txt',
 }
 
 const playlists = [
@@ -22,11 +20,12 @@ const playlists = [
   },
 ]
 
-function main() {
+async function main() {
   ensurePathExists(BASE_PATH)
-  return Promise.all(
+  const statusCodes = await Promise.all(
     playlists.map(({ output, url }) => download(authOpts)(output)(url))
   )
+  handleError(statusCodes)
 }
 
 function buildPlaylistUrl(playlistId) {
