@@ -13,32 +13,43 @@ main()
 
 const downloadInsta = download()(videoPaths.instagram)
 
-function getVideoUrlsFromApi() {
-  const FIRST_COUNT = 40
+const COUNT = 10
 
-  const archive = readArchive()
-
-  const query_hash = 'f883d95537fbcd400f466f63d42bd8a1'
+async function getVideoUrlsFromApi(after, total = 0) {
+  const query_hash = '8c86fed24fa03a8a2eea2a70a80c7b6b'
   const variables = encodeURI(
     JSON.stringify({
       id: '2910570632',
-      first: FIRST_COUNT,
+      first: 12,
+      after,
     })
   )
 
-  return axios
+  let hasNext
+  let endCursor
+
+  const urls = await axios
     .get(
       `https://www.instagram.com/graphql/query/?query_hash=${query_hash}&variables=${variables}`,
       { headers: { Cookie } }
     )
-    .then(({ data }) => extractUrls(data))
-    .then(filter(url => archive.indexOf(url) === -1))
-    .then(map(buildUrl))
-    .then(urls => {
-      console.log(`${FIRST_COUNT - urls.length} already recorded in archive`)
-      return urls
+    .then(({ data }) => {
+      hasNext = data.data.user.edge_saved_media.page_info.has_next_page
+      endCursor = data.data.user.edge_saved_media.page_info.end_cursor
+      return extractUrls(data)
     })
+    .then(map(buildUrl))
     .catch(handleRequestError)
+
+  const totalUrls = total + urls.length
+  console.log(`Total urls: ${totalUrls}`)
+
+  if (hasNext && totalUrls < COUNT) {
+    const nextUrls = await getVideoUrlsFromApi(endCursor, totalUrls)
+    return [...urls, ...nextUrls]
+  } else {
+    return urls
+  }
 }
 
 function extractUrls(response) {
