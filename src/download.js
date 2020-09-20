@@ -12,7 +12,7 @@ function download(authOpts = {}) {
     ? ['--cookies', path.join(__dirname, '../cookies', authOpts.cookie)]
     : []
 
-  return outputPath => url =>
+  return (outputPath) => (url) =>
     new Promise((resolve, reject) => {
       const child = spawn(
         'youtube-dl',
@@ -24,15 +24,16 @@ function download(authOpts = {}) {
           ...cookies,
           ...['--download-archive', outputPath + '/archive.txt'],
           '--ignore-errors',
+          '--no-warnings',
         ],
         { stdio: 'inherit' }
       )
 
-      child.on('exit', code => {
+      child.on('exit', (code) => {
         resolve(code)
       })
 
-      child.on('error', e => {
+      child.on('error', (e) => {
         reject(e)
       })
     })
