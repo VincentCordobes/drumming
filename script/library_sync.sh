@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sourcepath="/Users/Vincent/drum-library"
+sourcepath="/home/vincent/Videos/drums"
 targetpath="/Volumes/Vincent HDD/drumming"
 
 
