@@ -1,4 +1,4 @@
-const BASE_PATH = '/Users/Vincent/drum-library'
+const BASE_PATH = '/home/vincent/Videos/drums'
 const videoPaths = {
   instagram: BASE_PATH + '/instagram',
   drum_lessons: BASE_PATH + '/drum_lessons',
