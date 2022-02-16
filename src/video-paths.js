@@ -4,6 +4,7 @@ const videoPaths = {
   drum_lessons: BASE_PATH + '/drum_lessons',
   drum_to_transcribe: BASE_PATH + '/drum_to_transcribe',
   static: BASE_PATH + '/static',
+  piano: '/home/vincent/Videos/piano',
 }
 
 module.exports = {

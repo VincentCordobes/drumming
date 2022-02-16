@@ -23,8 +23,8 @@ function download(authOpts = {}) {
           ...authParams,
           ...cookies,
           ...['--download-archive', outputPath + '/archive.txt'],
-          '--ignore-errors',
-          '--no-warnings',
+          // '--ignore-errors',
+          // '--no-warnings',
         ],
         { stdio: 'inherit' }
       )

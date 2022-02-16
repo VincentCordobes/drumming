@@ -10,13 +10,17 @@ const authOpts = {
 }
 
 const playlists = [
+  // {
+  //   output: videoPaths.drum_to_transcribe,
+  //   url: buildPlaylistUrl('PLDhUIscho1EkmdxCU1agtKspnuKIRMt_V'),
+  // },
+  // {
+  //   output: videoPaths.drum_lessons,
+  //   url: buildPlaylistUrl('PLDhUIscho1ElAGkWJ6H_gqsv0xqi8EXLS'),
+  // },
   {
-    output: videoPaths.drum_to_transcribe,
-    url: buildPlaylistUrl('PLDhUIscho1EkmdxCU1agtKspnuKIRMt_V'),
-  },
-  {
-    output: videoPaths.drum_lessons,
-    url: buildPlaylistUrl('PLDhUIscho1ElAGkWJ6H_gqsv0xqi8EXLS'),
+    output: videoPaths.piano,
+    url: buildPlaylistUrl('PLDhUIscho1EkZFyTcCg2clexSlkfMk11G'),
   },
 ]
 
