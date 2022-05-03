@@ -19,8 +19,12 @@ const playlists = [
   //   url: buildPlaylistUrl('PLDhUIscho1ElAGkWJ6H_gqsv0xqi8EXLS'),
   // },
   {
-    output: videoPaths.piano,
+    output: videoPaths.piano_lessons,
     url: buildPlaylistUrl('PLDhUIscho1EkZFyTcCg2clexSlkfMk11G'),
+  },
+  {
+    output: videoPaths.piano,
+    url: buildPlaylistUrl('PLDhUIscho1EkaVZT-pNkG2cxQ3q-p1Jpw'),
   },
 ]
 
