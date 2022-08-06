@@ -15,48 +15,35 @@ const downloadInsta = download()(videoPaths.instagram)
 
 const COUNT = 10
 
-async function getVideoUrlsFromApi(after, total = 0) {
-  const query_hash = '8c86fed24fa03a8a2eea2a70a80c7b6b'
-  const variables = encodeURI(
-    JSON.stringify({
-      id: '2910570632',
-      first: 12,
-      after,
-    })
-  )
-
-  let hasNext
-  let endCursor
-
-  const urls = await axios
-    .get(
-      `https://www.instagram.com/graphql/query/?query_hash=${query_hash}&variables=${variables}`,
-      { headers: { Cookie } }
+async function getVideoUrlsFromApi(maxId = '', total = 0) {
+  try {
+    const { data } = await axios.get(
+      `https://i.instagram.com/api/v1/feed/saved/posts/?max_id=${maxId}`,
+      {
+        headers: {
+          'user-agent': 'Instagram 219.0.0.12.117 Android',
+          Cookie,
+        },
+      }
     )
-    .then(({ data }) => {
-      hasNext = data.data.user.edge_saved_media.page_info.has_next_page
-      endCursor = data.data.user.edge_saved_media.page_info.end_cursor
-      return extractUrls(data)
-    })
-    .then(map(buildUrl))
-    .catch(handleRequestError)
 
-  const totalUrls = total + urls.length
-  console.log(`Total urls: ${totalUrls}`)
+    const hasNext = data.more_available
+    const nextMaxId = data.next_max_id
 
-  if (hasNext && totalUrls < COUNT) {
-    const nextUrls = await getVideoUrlsFromApi(endCursor, totalUrls)
-    return [...urls, ...nextUrls]
-  } else {
-    return urls
+    const urls = data.items.map((item) => buildUrl(item.media.code))
+
+    const totalUrls = total + urls.length
+    console.info(`Total urls: ${totalUrls}`)
+
+    if (hasNext && totalUrls < COUNT) {
+      const nextUrls = await getVideoUrlsFromApi(nextMaxId, totalUrls)
+      return [...urls, ...nextUrls]
+    } else {
+      return urls
+    }
+  } catch (e) {
+    handleRequestError(e)
   }
-}
-
-function extractUrls(response) {
-  return flow(
-    get('data.user.edge_saved_media.edges'),
-    map(get('node.shortcode'))
-  )(response)
 }
 
 async function main() {
@@ -75,19 +62,18 @@ async function main() {
     fs.mkdirSync(videoPaths.instagram)
   }
 
-  const chunks = chunk(4, urls)
   let statusCodes = []
-  for (let i = 0; i < chunks.length; i++) {
-    const urls = chunks[i]
-    const codes = await Promise.all(urls.map(downloadInsta))
-    statusCodes.push(...codes)
+  for (const url of urls) {
+    console.info('Downloading', url)
+    const code = await downloadInsta(url)
+    statusCodes.push(code)
   }
 
   handleError(statusCodes)
 }
 
-function buildUrl(shortcode) {
-  return `https://www.instagram.com/p/${shortcode}/`
+function buildUrl(code) {
+  return `https://www.instagram.com/p/${code}/`
 }
 
 function handleRequestError(error) {

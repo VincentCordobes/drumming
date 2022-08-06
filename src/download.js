@@ -1,6 +1,9 @@
 const { spawn } = require('child_process')
 const path = require('path')
 
+const YT_DL_BIN = 'yt-dlp'
+// 'youtube-dl'
+
 const OUTPUT_TEMPLATE = '%(title)s-%(id)s.%(ext)s'
 
 function download(authOpts = {}) {
@@ -15,7 +18,7 @@ function download(authOpts = {}) {
   return (outputPath) => (url) =>
     new Promise((resolve, reject) => {
       const child = spawn(
-        'youtube-dl',
+        YT_DL_BIN,
         [
           url,
           '-o',

@@ -1,8 +1,9 @@
 #!/bin/bash
 
-sourcepath="/home/vincent/Videos/drums"
-targetpath="/Volumes/Vincent HDD/drumming"
+set -e
 
+sourcepath="/home/vincent/Videos/drums"
+targetpath="/mnt/vincent_hdd/drumming"
 
 cd $sourcepath
 
@@ -17,12 +18,12 @@ if [[ ! -d "$targetpath" ]]; then
 fi
 
 echo "Checking archive files..."
-find "$sourcepath" -name 'archive.txt' | while read archive_source; do
+find "$sourcepath" -name 'archive.txt' | while read -r archive_source; do
   archivefile=${archive_source#$sourcepath}
-  archive_target=`find "$targetpath" -path "*$archivefile"`
+  archive_target=$(find "$targetpath" -path "*$archivefile")
 
-  source_count=`wc -l "$archive_source" | awk '{print $1}'`
-  target_count=`wc -l "$archive_target" | awk '{print $1}'`
+  source_count=$(wc -l "$archive_source" | awk '{print $1}')
+  target_count=$(wc -l "$archive_target" | awk '{print $1}')
 
   if [ "$source_count" -lt "$target_count" ]; then
     echo "KO $archivefile (source: $source_count, target: $target_count)"
@@ -34,7 +35,7 @@ find "$sourcepath" -name 'archive.txt' | while read archive_source; do
   echo "OK $archivefile (source: $source_count, target: $target_count)"
 done
 
-rsync -auvh --progress --exclude=".*" "$sourcepath/"  "$targetpath"
+rsync -rtuvh --progress --exclude=".*" "$sourcepath/"  "$targetpath"
 
 git add .
 git commit -m 'Update' || echo 'Nothing to commit'
