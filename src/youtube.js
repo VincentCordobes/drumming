@@ -10,22 +10,22 @@ const authOpts = {
 }
 
 const playlists = [
-  // {
-  //   output: videoPaths.drum_to_transcribe,
-  //   url: buildPlaylistUrl('PLDhUIscho1EkmdxCU1agtKspnuKIRMt_V'),
-  // },
-  // {
-  //   output: videoPaths.drum_lessons,
-  //   url: buildPlaylistUrl('PLDhUIscho1ElAGkWJ6H_gqsv0xqi8EXLS'),
-  // },
   {
-    output: videoPaths.piano_lessons,
-    url: buildPlaylistUrl('PLDhUIscho1EkZFyTcCg2clexSlkfMk11G'),
+    output: videoPaths.drum_to_transcribe,
+    url: buildPlaylistUrl('PLDhUIscho1EkmdxCU1agtKspnuKIRMt_V'),
   },
   {
-    output: videoPaths.piano,
-    url: buildPlaylistUrl('PLDhUIscho1EkaVZT-pNkG2cxQ3q-p1Jpw'),
+    output: videoPaths.drum_lessons,
+    url: buildPlaylistUrl('PLDhUIscho1ElAGkWJ6H_gqsv0xqi8EXLS'),
   },
+  // {
+  //   output: videoPaths.piano_lessons,
+  //   url: buildPlaylistUrl('PLDhUIscho1EkZFyTcCg2clexSlkfMk11G'),
+  // },
+  // {
+  //   output: videoPaths.piano,
+  //   url: buildPlaylistUrl('PLDhUIscho1EkaVZT-pNkG2cxQ3q-p1Jpw'),
+  // },
 ]
 
 async function main() {

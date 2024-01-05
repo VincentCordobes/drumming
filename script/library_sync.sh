@@ -35,7 +35,7 @@ find "$sourcepath" -name 'archive.txt' | while read -r archive_source; do
   echo "OK $archivefile (source: $source_count, target: $target_count)"
 done
 
-rsync -rtuvh --progress --exclude=".*" "$sourcepath/"  "$targetpath"
+sudo rsync -rtuvh --progress --exclude=".*" "$sourcepath/"  "$targetpath"
 
 git add .
 git commit -m 'Update' || echo 'Nothing to commit'
